@@ -2,6 +2,8 @@ version: "3.7"
 
 services:
   nginx:
+    labels:
+      shipyard.route: "/"
     image: index.docker.io/appsmith/appsmith-editor
     env_file: ./docker.env
     ports:
@@ -27,11 +29,13 @@ services:
       - appsmith
 
   appsmith-internal-server:
+    labels:
+      shipyard.route: "/api"
     image: index.docker.io/appsmith/appsmith-server
     env_file:
       - ./docker.env
       - ./encryption.env
-    expose:
+    ports:
       - "8080"
     links:
       - mongo
@@ -43,7 +47,7 @@ services:
 
   mongo:
     image: mongo
-    expose:
+    ports:
       - "27017"
     environment:
       - MONGO_INITDB_DATABASE=appsmith
@@ -57,7 +61,7 @@ services:
 
   redis:
     image: redis
-    expose:
+    ports:
       - "6379"
     networks:
       - appsmith
