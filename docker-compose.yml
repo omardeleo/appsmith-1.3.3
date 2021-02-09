@@ -36,7 +36,7 @@ services:
       - ./docker.env
       - ./encryption.env
     ports:
-      - "8080"
+      - "8080:8080"
     links:
       - mongo
     depends_on:
